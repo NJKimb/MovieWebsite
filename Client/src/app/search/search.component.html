@@ -1,0 +1,24 @@
+
+    <form>
+        <div class="mb-3">
+            <h1>Search for a Movie</h1>
+            <input 
+                type="text"
+                class="form-control"
+                placeholder="Search for a Movie"
+                #filter
+                >
+                <div class="form-group text-center">
+                    <button class="btn me-2 mt-2 btn-light" type="button" (click)="filterResults(filter.value)">Search</button>
+                </div>
+                <ul style="list-style: none;">
+                    @for (movie of filteredMovies; track $index) {
+                        <li>
+                            {{movie.title}} - {{movie.director}}
+                            
+                        </li>
+                    }
+                </ul>
+        </div>
+    </form>
+    

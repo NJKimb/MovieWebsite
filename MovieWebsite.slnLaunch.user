@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "Full Stack",
+    "Projects": [
+      {
+        "Path": "API\\API.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "Client\\Client.esproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

@@ -10,19 +10,8 @@ import { NavComponent } from "../nav/nav.component";
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent {
   http = inject(HttpClient);
   movies: any;
 
-  getUsers() {
-    this.http.get('http://localhost:5002/api/movies').subscribe({
-      next: response => this.movies = response,
-      error: error => console.log(error),
-      complete: () => console.log("Request Completed")
-    });
-  } 
-
-  ngOnInit(): void {
-    this.getUsers()
-  }
 }

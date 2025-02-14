@@ -21,6 +21,7 @@ namespace MovieAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Movie>>> GetMovies()
         {
+            
             return await _context.Movies.ToListAsync();
         }
 

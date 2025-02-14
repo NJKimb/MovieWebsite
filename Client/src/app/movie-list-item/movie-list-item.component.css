@@ -1,0 +1,35 @@
+.card{
+    position: relative;
+    width: 800px;
+    height: 100px;
+    border: 1px solid gray;
+}
+
+.card img{
+    object-fit: contain;
+    height: 90px;
+    overflow: hidden;
+    position: absolute;
+    right: 365px;
+    top: 4px;
+}
+
+.card-image-wrapper{
+    overflow: hidden;
+}
+
+.movie-title{
+    position: absolute;
+    left: 75px;
+    top: 10px;
+    font-weight: bold;
+}
+
+.movie-information{
+    color: gray;
+    font-size: small;
+}
+
+.fa-star{
+    color: yellow;
+}

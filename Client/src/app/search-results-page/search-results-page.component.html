@@ -1,0 +1,9 @@
+<div class="mb-3">
+    <ul style="list-style: none;">
+        @for (movie of filteredMovies; track $index) {
+        <div class="list-item mb-1">
+            <app-movie-list-item [movie]="movie"></app-movie-list-item>
+        </div>
+        }
+    </ul>
+</div>

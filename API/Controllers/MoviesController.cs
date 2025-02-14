@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using API.Entities;
+using API.Interfaces;
+using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MovieAPI.Data;
 using MovieAPI.Dtos;
@@ -8,28 +11,23 @@ namespace MovieAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class MoviesController : ControllerBase
+    public class MoviesController(IMovieRepository movieRepository, IMapper mapper) : ControllerBase
     {
-        private readonly DataContext _context;
-
-        public MoviesController(DataContext context)
-        {
-            _context = context;
-        }
 
         // GET: api/Movies
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Movie>>> GetMovies()
         {
-            
-            return await _context.Movies.ToListAsync();
+            var movies = await movieRepository.GetMoviesAsync();
+
+            return Ok(movies);
         }
 
         // GET: api/Movies/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Movie>> GetMovie(int id)
         {
-            var movie = await _context.Movies.FindAsync(id);
+            var movie = await movieRepository.GetMovieByIdAsync(id);
 
             if (movie == null)
             {
@@ -37,31 +35,6 @@ namespace MovieAPI.Controllers
             }
 
             return movie;
-        }
-
-        // PUT: api/Movies/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("put/{id}")]
-        public async Task<IActionResult> PutMovie(int id, MovieDto MovieDto)
-        {
-            if (!MovieExists(id))
-            {
-                return NotFound();
-            }
-
-            Movie movie = new Movie
-            {
-                Id = id,
-                Title = MovieDto.Title,
-                Director = MovieDto.Director,
-                ReleaseDate = MovieDto.ReleaseDate
-            };
-
-            var movieTarget = await _context.Movies.FindAsync(id);
-            _context.Entry(movieTarget).CurrentValues.SetValues(movie);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
         }
 
         // POST: api/Movies
@@ -73,36 +46,23 @@ namespace MovieAPI.Controllers
             {
                 Title = MovieDto.Title,
                 Director = MovieDto.Director,
-                ReleaseDate = MovieDto.ReleaseDate
+                ReleaseDate = MovieDto.ReleaseDate,
+                Rating = MovieDto.Rating,
+                PhotoUrl = MovieDto.PhotoUrl
             };
 
-            _context.Movies.Add(movie);
-            await _context.SaveChangesAsync();
+            movieRepository.AddMovie(movie);
+            await movieRepository.SaveAllAsync();
 
-            return CreatedAtAction("GetMovie", new { id = movie.Id }, movie);
+            return Ok();
         }
 
         // DELETE: api/Movies/5
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> DeleteMovie(int id)
         {
-            var movie = await _context.Movies.FindAsync(id);
-            if (movie == null)
-            {
-                return NotFound();
-            }
-
-            movie.Id = id;
-            _context.Movies.Remove(movie);
-            await _context.SaveChangesAsync();
-
+            await movieRepository.DeleteMovieByIdAsync(id);
             return NoContent();
-        }
-
-        private bool MovieExists(int id)
-        {
-            var exists =  _context.Movies.Any(e => e.Id == id);
-            return exists;
         }
     }
 }

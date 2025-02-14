@@ -9,4 +9,8 @@ import { Component, input } from '@angular/core';
 })
 export class MovieListItemComponent {
   movie = input.required<any>();
+
+  getReleaseYear(releaseDate: string) {
+    return releaseDate.substring(0, releaseDate.indexOf("-"));
+  }
 }
